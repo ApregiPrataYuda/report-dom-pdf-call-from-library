@@ -1,0 +1,50 @@
+report dom pdf call from library
+step
+-download lib dom  pdf
+-save at your folder  example -assets - vendor - dompdf
+-created your code at library in codeigniter
+
+<?php
+
+
+ Class Fungsi
+{
+    protected $ci;
+
+    function __construct()
+    {
+        $this->ci =&  get_instance();
+    }
+    
+    public function Pdf_generator($html, $filename, $paper , $orentation)
+    {
+     // instantiate and use the dompdf class
+       $dompdf = new  Dompdf\Dompdf();
+       $dompdf->loadHtml($html);
+
+       // (Optional) Setup the paper size and orientation
+        $dompdf->setPaper($paper, $orentation);
+
+       // Render the HTML as PDF
+        $dompdf->render();
+
+       // Output the generated PDF to Browser
+          $dompdf->stream($filename, array('attachment' => 0));
+    
+    }
+    
+    }
+    
+    
+    //call at controller
+    
+     public function exportpdf()
+       {
+
+           $data['row'] = $this->nama_your_model->gets();
+           $html = $this->load->view('item/exportpdf', $data, true);
+           $this->fungsi->Pdf_generator($html,'data-inventory','A4','potrait');
+       }
+       
+       //call in views
+        <a href="<?= site_url('Item/exportpdf')?>" class="btn btn-success btn-sm"><i class="fa   fa-file-pdf-o">  Export pdf</i></a>
